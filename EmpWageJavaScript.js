@@ -467,7 +467,7 @@ function GetDailyWage(dailyWorkingHrs) {
     return dailyWorkingHrs * WAGE_PER_HR;
 }
 
-*/
+
 
 //UC10
 //
@@ -526,3 +526,87 @@ function GetWorkingHrs() {
 function GetDailyWage(empHrs) {
     return empHrs * WAGE_PER_HR;
 }
+*/
+
+//UC11
+//Object Operation using arrow functions
+//CONSTANTS
+const IS_FULL_TIME = 2;
+const IS_ABSENT = 0;
+const IS_PART_TIME = 1;
+const WAGE_PER_HR = 20;
+const FULL_DAY_HOURS = 8;
+const PART_TIME_HOURS = 4;
+const MAX_WORKING_DAY_PER_MONTH = 20;
+const MAX_WORKING_HRS_PER_MONTH = 100;
+let totalEmpHrs=0;
+
+//Variables
+let totalWorkingDays = 0;
+let empHrs =0;
+//Daily EmpWage in Array
+let dailyEmpWageArray = new Array();
+
+while (totalEmpHrs <= MAX_WORKING_HRS_PER_MONTH && totalWorkingDays < MAX_WORKING_DAY_PER_MONTH){
+    totalWorkingDays++;
+
+    let empCheck = Math.floor(Math.random()*10)%3;
+    let empHrs = GetWorkingHrs(empCheck);
+    totalEmpHrs+=empHrs;
+    dailyEmpWageArray.push({
+        dayNum: totalWorkingDays,
+        dailyHours:empHrs,
+        dailyWage: GetDailyWage(empHrs),
+        toString(){
+            return '\nDay'+this.dayNum + '=> Working Hours is ' + this.dailyHours+ ' And Wage earned = ' + this.dailyWage
+        },
+    
+    });
+}
+console.log("UC 10 showing Daily Hours Worked and Wage Earned: " + dailyEmpWageArray);
+
+function GetWorkingHrs() {
+    let empCheck;
+    empCheck = Math.floor(Math.random() * 10) % 3;
+    switch (empCheck) {
+        case IS_ABSENT:
+            return 0;
+            break;
+        case IS_PART_TIME:
+            return PART_TIME_HOURS;
+            break;
+        case IS_FULL_TIME:
+            return FULL_DAY_HOURS;
+            break;
+    }
+}
+function GetDailyWage(empHrs) {
+    return empHrs * WAGE_PER_HR;
+}
+
+//Variables
+let monthlyEmpWage = 0;
+let dailyWorkingHrs = 0;
+let totalWorkingHrs = 0;
+
+//Daily EmpWage in Map
+let dailyEmpWageMap = new Map();
+
+let totalEmpWage = dailyEmpWageArray.filter(dailyHrsandWage => dailyHrsandWage.dailyWage > 0)
+                    .reduce((totalEmpWage, dailyHrsandWage)=>totalEmpWage+=dailyHrsandWage.dailyWage,0);
+let TotalEmpHrs = dailyEmpWageArray.filter(dailyHrsandWage => dailyHrsandWage.dailyWage > 0)
+                    .reduce((TotalEmpHrs, dailyHrsandWage)=>TotalEmpHrs+=dailyHrsandWage.dailyWage,0);
+console.log("UC 11A Total Hours : " + TotalEmpHrs+ " Total Wages: " + totalEmpWage)
+
+process.stdout.write("UC 11 B Logging Full Work Days")
+dailyEmpWageArray.filter(dailyHrsandWage=> dailyHrsandWage.dailyHours==8)
+                .forEach(dailyHrsandWage=> process.stdout.write(dailyHrsandWage.toString()));
+
+let partWorkingDayStrArr=dailyEmpWageArray.filter(dailyHrsandWage=> dailyHrsandWage.dailyHours==4)
+.map(dailyHrsandWage=> dailyHrsandWage.toString());
+
+console.log("\nUC 11C PartWorkingDayString : " + partWorkingDayStrArr);
+
+let nonWorkingDayNums = dailyEmpWageArray.filter(dailyHrsandWage=> dailyHrsandWage.dailyHours==0)
+.map(dailyHrsandWage=> dailyHrsandWage.toString());
+console.log("\nUC 11D NonWorkingDayString : " + nonWorkingDayNums);
