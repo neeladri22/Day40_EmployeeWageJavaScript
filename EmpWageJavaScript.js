@@ -589,7 +589,7 @@ let monthlyEmpWage = 0;
 let dailyWorkingHrs = 0;
 let totalWorkingHrs = 0;
 
-//Daily EmpWage in Map
+//Daily Emp Wage in Map
 let dailyEmpWageMap = new Map();
 
 let totalEmpWage = dailyEmpWageArray.filter(dailyHrsandWage => dailyHrsandWage.dailyWage > 0)
